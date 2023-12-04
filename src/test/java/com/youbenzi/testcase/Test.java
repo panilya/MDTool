@@ -10,7 +10,12 @@ public class Test {
 
 	@org.junit.Test
 	public void test() throws IOException {
-		String result = MDTool.markdown2Html(new File(Test.class.getResource("/file.md").getFile()));
+		String result = null;
+		try {
+			result = MDTool.markdown2Html(new File(Test.class.getResource("/file.md").getFile()));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		System.out.println(result);
 	}
 

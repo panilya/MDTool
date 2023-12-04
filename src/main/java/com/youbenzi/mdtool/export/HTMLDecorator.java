@@ -21,11 +21,10 @@ public class HTMLDecorator implements Decorator {
 
 	}
 
-	public void decorate(List<Block> list) {
+	public void decorate(List<Block> list) throws RuntimeException {
 		for (Block block : list) {
-			try {
-				String str;
-				switch (block.getType()) {
+			String str;
+			switch (block.getType()) {
 				case CODE:
 					str = codeParagraph(block.getValueParts());
 					break;
@@ -44,12 +43,10 @@ public class HTMLDecorator implements Decorator {
 				default:
 					str = commonTextParagraph(block.getValueParts(), true);
 					break;
-				}
-
-				content.append(str).append("\n");
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+
+			content.append(str).append("\n");
+
 		}
 	}
 
@@ -109,48 +106,48 @@ public class HTMLDecorator implements Decorator {
 		StringBuilder tmp = new StringBuilder();
 
 		switch (blockType) {
-		case ORDERED_LIST:
-			tmp.append(orderedListParagraph(listData)).append("\n");
-			break;
-		case UNORDERED_LIST:
-			tmp.append(unorderedListParagraph(listData)).append("\n");
-			break;
-		case QUOTE:
-			tmp.append(quoteParagraph(listData)).append("\n");
-			break;
-		case TODO_LIST:
-			tmp.append(todoListParagraph(listData)).append("\n");
-			break;
-		default:
-			break;
+			case ORDERED_LIST:
+				tmp.append(orderedListParagraph(listData)).append("\n");
+				break;
+			case UNORDERED_LIST:
+				tmp.append(unorderedListParagraph(listData)).append("\n");
+				break;
+			case QUOTE:
+				tmp.append(quoteParagraph(listData)).append("\n");
+				break;
+			case TODO_LIST:
+				tmp.append(todoListParagraph(listData)).append("\n");
+				break;
+			default:
+				break;
 		}
 		return tmp.toString();
 	}
 
 	private String formatByType(BlockType type, String value, ValuePart valuePart) {
 		switch (type) {
-		case BOLD_WORD:
-			return "<strong>" + value + "</strong>";
-		case ITALIC_WORD:
-			return "<em>" + value + "</em>";
-		case STRIKE_WORD:
-			return "<del>" + value + "</del>";
-		case CODE_WORD:
-			value = value.replaceAll("<", "&lt;");
-			value = value.replaceAll(">", "&gt;");
-			return "<code>" + value + "</code>";
-		case HEADLINE:
-			int level = valuePart.getLevel() + 1;
-			return "<h" + level + ">" + value + "</h" + level + ">";
-		case LINK:
-			return "<a href=\"" + valuePart.getUrl() + "\" title=\"" + Tools.filterHtml(value) + "\">" + value + "</a>";
-		case IMG:
-			return "<img src=\"" + valuePart.getUrl() + "\" title=\"" + valuePart.getTitle() + "\" alt=\""
-					+ valuePart.getTitle() + "\" />";
-		case ROW:
-			return "<br/>";
-		default:
-			return value;
+			case BOLD_WORD:
+				return "<strong>" + value + "</strong>";
+			case ITALIC_WORD:
+				return "<em>" + value + "</em>";
+			case STRIKE_WORD:
+				return "<del>" + value + "</del>";
+			case CODE_WORD:
+				value = value.replaceAll("<", "&lt;");
+				value = value.replaceAll(">", "&gt;");
+				return "<code>" + value + "</code>";
+			case HEADLINE:
+				int level = valuePart.getLevel() + 1;
+				return "<h" + level + ">" + value + "</h" + level + ">";
+			case LINK:
+				return "<a href=\"" + valuePart.getUrl() + "\" title=\"" + Tools.filterHtml(value) + "\">" + value + "</a>";
+			case IMG:
+				return "<img src=\"" + valuePart.getUrl() + "\" title=\"" + valuePart.getTitle() + "\" alt=\""
+						+ valuePart.getTitle() + "\" />";
+			case ROW:
+				return "<br/>";
+			default:
+				return value;
 		}
 	}
 
@@ -178,7 +175,7 @@ public class HTMLDecorator implements Decorator {
 				} catch (Exception e) {
 					tmp.append("");
 				}
-				tmp.append("</" + (head?"th":"td") + ">\n");
+				tmp.append("</" + (head ? "th" : "td") + ">\n");
 			}
 			tmp.append("</tr>\n");
 		}
@@ -191,7 +188,7 @@ public class HTMLDecorator implements Decorator {
 		if (align != TableCellAlign.NONE) {
 			alignString = "align=\"" + align.value() + "\"";
 		}
-		return "<" + (head?"th":"td") + " " + alignString + ">";
+		return "<" + (head ? "th" : "td") + " " + alignString + ">";
 	}
 
 	private String abstractListParagraph(List<Block> listData, LineHelper lineHelper) {
@@ -362,6 +359,6 @@ public class HTMLDecorator implements Decorator {
 //						+"* 列表1.4\n"
 //						+"* 列表1.4\n"
 //						+"* 列表1.4\n";
-		System.out.println(MDTool.markdown2Html(content));
+//		System.out.println(MDTool.markdown2Html(content));
 	}
 }
